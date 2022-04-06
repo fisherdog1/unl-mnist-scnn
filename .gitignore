@@ -64,12 +64,7 @@
 */incremental_db/
 *simulation/
 *synthesis/
-*/system/*.bsf
-*/system/*.csv
-*/system/*.spd
-*/system/*.xml
-*/system/simulation/
-*/system/synthesis/
+*testbench/
 */timing/
 */testbench/
 */*_sim/
@@ -77,6 +72,6 @@
 *incremental_db/
 */db/
 */vunit_out/
-*/.qsys_edit/
+*.qsys_edit/
 _output_files/
 PLLJ_PLLSPE_INFO.txt

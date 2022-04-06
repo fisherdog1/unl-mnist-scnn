@@ -22,9 +22,37 @@ entity top is
 end top;
 
 architecture rtl of top is
+
+	component testbench is
+		port (
+			clk_clk       : in  std_logic                    := 'X'; -- clk
+			reset_reset_n : in  std_logic                    := 'X'; -- reset_n
+			vga_if_CLK    : out std_logic;                           -- CLK
+			vga_if_HS     : out std_logic;                           -- HS
+			vga_if_VS     : out std_logic;                           -- VS
+			vga_if_BLANK  : out std_logic;                           -- BLANK
+			vga_if_SYNC   : out std_logic;                           -- SYNC
+			vga_if_R      : out std_logic_vector(3 downto 0);        -- R
+			vga_if_G      : out std_logic_vector(3 downto 0);        -- G
+			vga_if_B      : out std_logic_vector(3 downto 0)         -- B
+		);
+	end component testbench;
+
 begin
 	
-	--Clasic test circuit
-	LEDR(0) <= SW(0);
+	vga_testbench : component testbench
+		port map (
+			clk_clk                        => MAX10_CLK1_50,                        
+			reset_reset_n                  => '1',                 
+			vga_if_CLK                     => open,                     
+			vga_if_HS                      => VGA_HS,                      
+			vga_if_VS                      => VGA_VS,                      
+			vga_if_BLANK                   => open,
+			vga_if_SYNC                    => open,                    
+			vga_if_R                       => VGA_R,                       
+			vga_if_G                       => VGA_G,                       
+			vga_if_B                       => VGA_B                        
+		);
+	
 	
 end rtl;
