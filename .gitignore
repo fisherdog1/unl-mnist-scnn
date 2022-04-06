@@ -62,8 +62,8 @@
 # ignore Quartus II generated folders
 *db/
 */incremental_db/
-*/simulation/
-*/synthesis/
+*simulation/
+*synthesis/
 */system/*.bsf
 */system/*.csv
 */system/*.spd
