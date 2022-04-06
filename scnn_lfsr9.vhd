@@ -5,11 +5,11 @@ use ieee.numeric_std.all;
 entity scnn_lfsr9 is
 	port (
 		clk, cke, rst : in std_logic;
+		shiftreg : buffer std_logic_vector(8 downto 0);
 		prbs : out std_logic );
 end scnn_lfsr9;
 
 architecture rtl of scnn_lfsr9 is
-	signal shiftreg : std_logic_vector(8 downto 0);
 begin
 
 	--pseudo random bit sequence out
