@@ -54,5 +54,12 @@ begin
 			vga_if_B                       => VGA_B                        
 		);
 	
+	--LEDS too bright
+	HEX0 <= (others => '1');
+	HEX1 <= (others => '1');
+	HEX2 <= (others => '1');
+	HEX3 <= (others => '1');
+	HEX4 <= (others => '1');
+	HEX5 <= (others => '1');
 	
 end rtl;
