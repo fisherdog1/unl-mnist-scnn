@@ -9,7 +9,8 @@ architecture tb_lfsr9 of tb is
 	signal clk, cke, prbs, rst : std_logic := '0';
 	signal wordstrobe_z1, wordstrobe_z2, wordstrobe : std_logic := '0';
 	
-	signal count, count2, shiftreg : std_logic_vector(8 downto 0);
+	signal count, count2 : std_logic_vector(8 downto 0);
+	signal shiftreg : std_logic_vector(8 downto 0);
 	
 	constant clk_per : time := 200ps;
 	

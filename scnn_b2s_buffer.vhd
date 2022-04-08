@@ -21,7 +21,7 @@ architecture rtl of scnn_b2s_buffer is
 	end component;
 
 	type buf_symbols_t is array(0 to symbols - 1) of std_logic_vector(bits_per_weight - 1 downto 0);
-	signal buf : buf_symbols_t := (others => (3 => '1', others => '0')); --Temporary
+	signal buf : buf_symbols_t := (others => (9 => '1', others => '0')); --Temporary
 begin
 
 	Sngs: for I in buf'range generate
