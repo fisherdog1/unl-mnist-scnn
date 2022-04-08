@@ -436,7 +436,6 @@ set_global_assignment -name QIP_FILE testbench/synthesis/testbench.qip
 set_global_assignment -name SDC_FILE timing.sdc
 set_global_assignment -name VHDL_FILE top.vhd
 set_global_assignment -name VHDL_FILE scnn_lfsr9.vhd
-set_global_assignment -name VHDL_FILE tb_lfsr9.vhd
 set_global_assignment -name VHDL_FILE scnn_accumulator.vhd
 set_global_assignment -name VHDL_FILE scnn_sng.vhd
 set_global_assignment -name ENABLE_OCT_DONE OFF
@@ -449,7 +448,6 @@ set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
 set_global_assignment -name VHDL_FILE scnn_axpc5.vhd
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name EDA_TEST_BENCH_NAME tb_axpc5 -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_axpc5
 set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "15 us" -section_id tb_axpc5
@@ -466,3 +464,4 @@ set_global_assignment -name EDA_TEST_BENCH_FILE scnn_sng.vhd -section_id tb_axpc
 set_global_assignment -name EDA_TEST_BENCH_FILE scnn_lfsr9.vhd -section_id tb_axpc5
 set_global_assignment -name EDA_TEST_BENCH_FILE scnn_s2b_buffer.vhd -section_id tb_axpc5
 set_global_assignment -name EDA_TEST_BENCH_FILE scnn_accumulator.vhd -section_id tb_axpc5
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

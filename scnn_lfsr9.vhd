@@ -25,7 +25,7 @@ begin
 			
 		elsif cke = '1' and rising_edge(clk) then
 			--shift bits right
-			shiftreg <= (shiftreg(11) xor shiftreg(8) xor shiftreg(6) xor shiftreg(0)) & shiftreg(11 downto 1);
+			shiftreg <= shiftreg(10 downto 0) & (shiftreg(0) xor shiftreg(3) xor shiftreg(5) xor shiftreg(11));
 			
 		end if;
 	end process;

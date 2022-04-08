@@ -1,17 +1,32 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
-entity tb is
-end tb;
+library vunit_lib;
+context vunit_lib.vunit_context;
 
-architecture tb_axpc5 of tb is
+library axpc_lib;
+
+entity tb_axpc5 is
+	generic (
+		runner_cfg : string );
+end tb_axpc5;
+
+architecture tb of tb_axpc5 is
 	
 	component scnn_b2s_buffer is
 		generic (	symbols : integer := 5;
-						bits_per_weight : integer := 4);
-		port (	lfsr_in : in std_logic_vector(symbols + bits_per_weight - 1 downto 0);
-					sn_vec_out : out std_logic_vector(symbols - 1 downto 0) );
+					bits_per_weight : integer := 4 );
+		port (	avs_address : in std_logic_vector(integer(log2(real(symbols - 1))) downto 0);
+				avs_writedata : in std_logic_vector(7 downto 0);
+				avs_write : in std_logic;
+				
+				csi_clk : in std_logic;
+				rsi_rst : in std_logic;
+				
+				lfsr_in : in std_logic_vector(symbols + bits_per_weight - 1 downto 0);
+				sn_vec_out : out std_logic_vector(symbols - 1 downto 0) );
 	end component;
 	
 	component scnn_lfsr9 is
@@ -46,15 +61,21 @@ begin
 	
 	dut: scnn_b2s_buffer
 		generic map (symbols => 2, bits_per_weight => 10)
-		port map (lfsr_in => shiftreg, sn_vec_out => sn_vec_out);
+		port map (lfsr_in => shiftreg, sn_vec_out => sn_vec_out,
+			csi_clk => clk,
+			rsi_rst => '0',
+			avs_address => (others => '0'),
+			avs_writedata => (others => '0'),
+			avs_write => '0');
 	
 	s2b: scnn_s2b_buffer
 		generic map (symbols => 2, bits_per_counter => 10)
 		port map (clk => clk, cke => cke, rst => rst, strobe => strobe, sn_vec_in => sn_vec_out, symbols_out => symbols);
 	
-	process
+	main: process
 	begin
-	
+		test_runner_setup(runner, runner_cfg);
+		
 		rst <= '1';
 		wait for clk_per * 9;
 		
@@ -67,6 +88,7 @@ begin
 		
 		wait for clk_per*2;
 		
+		test_runner_cleanup(runner);
 	end process;
 	
-end tb_axpc5;
+end tb;

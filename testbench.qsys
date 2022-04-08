@@ -33,6 +33,22 @@
          type = "int";
       }
    }
+   element mm_clock_crossing_bridge_0
+   {
+      datum _sortIndex
+      {
+         value = "8";
+         type = "int";
+      }
+   }
+   element mm_clock_crossing_bridge_0.s0
+   {
+      datum baseAddress
+      {
+         value = "131072";
+         type = "String";
+      }
+   }
    element onchip_memory2_0
    {
       datum _sortIndex
@@ -104,6 +120,11 @@
  <instanceScript></instanceScript>
  <interface name="altpll_0_areset_conduit" internal="altpll_0.areset_conduit" />
  <interface name="altpll_0_locked_conduit" internal="altpll_0.locked_conduit" />
+ <interface
+   name="avm_export"
+   internal="mm_clock_crossing_bridge_0.m0"
+   type="avalon"
+   dir="start" />
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
  <interface
@@ -299,6 +320,23 @@
   <parameter name="USE_PLI" value="0" />
  </module>
  <module
+   name="mm_clock_crossing_bridge_0"
+   kind="altera_avalon_mm_clock_crossing_bridge"
+   version="18.1"
+   enabled="1">
+  <parameter name="ADDRESS_UNITS" value="SYMBOLS" />
+  <parameter name="ADDRESS_WIDTH" value="10" />
+  <parameter name="COMMAND_FIFO_DEPTH" value="4" />
+  <parameter name="DATA_WIDTH" value="8" />
+  <parameter name="MASTER_SYNC_DEPTH" value="3" />
+  <parameter name="MAX_BURST_SIZE" value="1" />
+  <parameter name="RESPONSE_FIFO_DEPTH" value="4" />
+  <parameter name="SLAVE_SYNC_DEPTH" value="3" />
+  <parameter name="SYMBOL_WIDTH" value="8" />
+  <parameter name="SYSINFO_ADDR_WIDTH" value="10" />
+  <parameter name="USE_AUTO_ADDRESS_WIDTH" value="1" />
+ </module>
+ <module
    name="onchip_memory2_0"
    kind="altera_avalon_onchip_memory2"
    version="18.1"
@@ -416,6 +454,15 @@
    kind="avalon"
    version="18.1"
    start="master_0.master"
+   end="mm_clock_crossing_bridge_0.s0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00020000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="master_0.master"
    end="onchip_memory2_0.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00010000" />
@@ -462,12 +509,22 @@
    version="18.1"
    start="altpll_0.c1"
    end="onchip_memory2_0.clk1" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="altpll_0.c1"
+   end="mm_clock_crossing_bridge_0.s0_clk" />
  <connection kind="clock" version="18.1" start="clk_0.clk" end="altpll_0.inclk0" />
  <connection
    kind="clock"
    version="18.1"
    start="clk_0.clk"
    end="altpll_0.inclk_interface" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk_0.clk"
+   end="mm_clock_crossing_bridge_0.m0_clk" />
  <connection
    kind="reset"
    version="18.1"
@@ -478,6 +535,11 @@
    version="18.1"
    start="clk_0.clk_reset"
    end="altpll_0.inclk_interface_reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
+   end="mm_clock_crossing_bridge_0.m0_reset" />
  <connection
    kind="reset"
    version="18.1"
@@ -503,6 +565,11 @@
    version="18.1"
    start="clk_0.clk_reset"
    end="onchip_memory2_0.reset1" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
+   end="mm_clock_crossing_bridge_0.s0_reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
