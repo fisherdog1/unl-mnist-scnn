@@ -4,7 +4,8 @@ use ieee.numeric_std.all;
 
 entity scnn_accumulator is
 	generic (
-		bits : integer := 9 );
+		bits : integer := 9;
+		strobe_triggers_reset : boolean := true );
 	port (
 		clk, up, rst, wordstrobe : in std_logic := '0';
 		count : out std_logic_vector(bits - 1 downto 0) := (others => '0') );
@@ -24,7 +25,7 @@ begin
 				count <= count_internal;
 			end if;
 			
-			if rst = '1' then
+			if rst = '1' or (strobe_triggers_reset and wordstrobe = '1') then
 				count_internal <= (others => '0');
 			end if;
 		end if;
