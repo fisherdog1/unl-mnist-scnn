@@ -12,12 +12,12 @@ def bipolar_weight_to_fixp8(weight):
     return numpy.clip(i,0,255)
 
 def write_weights(npy, ih, mutable_addr):
-    for layer in npy:
-        for idk in layer: # No idea why this extra level is in the filter kernel, Netron shows it as "8x1x5x5" so this is the "1"
-            for row in idk:
-                for weight in row:
-                    ih[mutable_addr[0]] = bipolar_weight_to_fixp8(weight)
-                    mutable_addr[0] += 1
+    if isinstance(npy, numpy.ndarray):
+        for l in npy:
+            write_weights(l, ih, mutable_addr)
+    else:
+        ih[mutable_addr[0]] = bipolar_weight_to_fixp8(npy)
+        mutable_addr[0] += 1
 
 def write_image(image, ih, mutable_addr):
     pixels = image.load()
