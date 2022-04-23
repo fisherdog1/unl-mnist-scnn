@@ -54,7 +54,7 @@ architecture rtl of top is
 		);
 	end component testbench;
 
-	signal shiftreg : std_logic_vector(31 downto 0);
+	signal shiftreg : std_logic_vector(62 downto 0);
 	signal avm_export_address : std_logic_vector(9 downto 0);
 	signal avm_export_writedata : std_logic_vector(7 downto 0);
 	signal avm_export_write : std_logic;
@@ -68,6 +68,8 @@ architecture rtl of top is
 	signal word_ready : std_logic := '0';
 	signal word_wait : std_logic := '1';
 	signal dma_read_n : std_logic;
+	
+	
 begin
 	
 	vga_testbench : component testbench
@@ -103,9 +105,9 @@ begin
 			shiftreg => shiftreg,
 			prbs => open
 		);
-	
-	buftest: entity work.scnn_b2s_buffer
-		generic map (symbols => 4, bits_per_weight => 8)
+
+	conv1_kernel_b2s: entity work.scnn_b2s_buffer
+		generic map (symbols => 25, bits_per_weight => 8)
 		port map (
 			csi_clk => MAX10_CLK1_50,
 			rsi_rst => '0',
@@ -114,15 +116,26 @@ begin
 			avs_writedata => avm_export_writedata,
 			avs_write => avm_export_write,
 			
-			lfsr_in => shiftreg(11 downto 0),
+			lfsr_in => shiftreg(24 downto 0),
 			sn_vec_out => sn_vec
 		);
 		
-		
-	word_wait <= not word_ready;
+	conv1_row_b2s: entity work.scnn_b2s_buffer
+		generic map (symbols => 32, bits_per_weight => 8)
+		port map (
+			csi_clk => MAX10_CLK1_50,
+			rsi_rst => '0',
+			
+			avs_address => avm_export_address(2 downto 0),
+			avs_writedata => avm_export_writedata,
+			avs_write => avm_export_write,
+			
+			lfsr_in => shiftreg(31 downto 0),
+			sn_vec_out => sn_vec
+		);
 	
-	bufin: entity work.scnn_s2b_buffer
-		generic map (symbols => 4, bits_per_counter => 8)
+	conv1_row_s2b: entity work.scnn_s2b_buffer
+		generic map (symbols => 32, bits_per_counter => 8)
 		port map (
 			clk => MAX10_CLK1_50,
 			cke => '1',
@@ -135,6 +148,7 @@ begin
 			);
 			
 	--wordstrobe counter
+	word_wait <= not word_ready;
 	
 	process (MAX10_CLK1_50, ctr)
 	begin
