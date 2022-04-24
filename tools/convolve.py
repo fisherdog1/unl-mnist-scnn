@@ -82,6 +82,10 @@ def main(argv):
         for ni in range(0, kernel.shape[0]):
             image = Image.open(image_name,"r").convert("RGB")
             pixels = image.load()
+            
+            out = Image.new("RGB", (image.width, image.height))
+            outpix = out.load()
+            
             if N is None or ni == N:
                 n = kernel[ni]
                 for c in n:
@@ -98,10 +102,10 @@ def main(argv):
                                         pixel_total += h * (pixels[sx,sy][0] / 255)
                             
                             p = numpy.clip(int(((pixel_total + 1.0) / 2.0)*255), 0, 255)
-                            pixels[x,y] = (p,p,p)
+                            outpix[x,y] = (p,p,p)
                             
                 # Write modified image
-                image.save(open(f"{outfile_prefix}_N{ni}.png","wb+"), format="png")
+                out.save(open(f"{outfile_prefix}_N{ni}.png","wb+"), format="png")
 
         print("Exiting normally")
         

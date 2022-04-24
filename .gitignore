@@ -54,7 +54,6 @@
 *.tcl
 *.tcl~
 
-*example*
 *sopc_*
 # *.sdc # I want those timing files
 
